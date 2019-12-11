@@ -13,6 +13,8 @@ def ReadAndAnalyse(filename):
 
     wb = openpyxl.Workbook()
     ws = wb.create_sheet("sheet",0)
+    E = sheet1.cell_value(0,3)
+    E1 = re.split('\(', E)[0]
 
 
     for i in range(0,n):
@@ -22,9 +24,7 @@ def ReadAndAnalyse(filename):
         B=rows[1]
         B1=re.split('uint8 ',B)[1]
         B1=re.split('\[',B1)[0]
-        E=rows[3]
-        E1=re.split('\(',E)[0]
-        E2=E1+"("+A1+")]="+B1+"[0];"
+        E2 = E1 + "(" + A1 + ")]=" + B1 + "[0];"
         ws.cell(i*10+1,1,A)
         ws.cell(i*10+1, 2, B)
         ws.cell(i*10+1, 5, E2)
