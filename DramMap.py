@@ -10,9 +10,11 @@ import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 from scipy.interpolate import *
 import  math
+import re
 class oringin:
     def __init__(self,path):
         self.path=path
+        plt.rcParams['font.sans-serif'] = ['SimHei']
     def readExcel(self):
         workbook1 = xlrd.open_workbook(filename=self.path)
         if self.path != "":
@@ -166,7 +168,25 @@ class oringin:
         self.list["TM_TEMP" + str(self.Num)] = []
         self.list["TORQUE" + str(self.Num)] = []
         self.list["UrmsA" + str(self.Num)] = []
-    def ChooseMAP1(self):
+    def ChooseMAP1(self,T):
+        T0 = []
+
+        # T1=re.split("\[",T)[0]
+        # T1=re.split("\]",T1)[0]
+        T1 = re.split(",", T)
+        for i in T1:
+            if i == "":
+                pass
+            if ":" in i:
+                T2 = re.split(':', i)
+                # for j in T2:
+                a = np.linspace(float(T2[0]), float(T2[2]), float(T2[1]))
+                for k in a:
+                    T0.append(k)
+            else:
+                T0.append(float(i))
+
+        self.T0 = T0
         maxsys = self.efficient_sys[0]
         maxtm = self.efficient_tm[0]
         maxtmi = self.efficient_tmi[0]
@@ -180,6 +200,7 @@ class oringin:
             if self.efficient_tmi[i] > maxtmi:
                 maxtmi = self.efficient_tmi[i]
                 maxtmiN = i
+
         self.InterData(self.efficient_tmi,self.efficient_tm,self.efficient_sys,maxsys,maxtm,maxtmi)
         self.PaintMAP1()
 
@@ -230,7 +251,7 @@ class oringin:
         contour = plt.contour(self.X, self.Y, self.zz1, self.T1)
         plt.clabel(contour, inline=True, fontsize=12, fmt='%1.1f')
         plt.plot(self.speed300, self.trq_max_serial, 'r-', linewidth=1.5)
-        plt.title('控制器效率')
+        plt.title('控制器效率\n 效率大于80占比：%.2f%s  效率大于85占比：%.2f%s 效率大于90占比：%.2f%s' %(self.eff80_TMI,'%',self.eff85_TMI,'%',self.eff90_TMI,'%'))
 
         # figure3
         fig3 = plt.figure()
@@ -243,7 +264,7 @@ class oringin:
         contour = plt.contour(self.X, self.Y, self.zz2, self.T1)
         plt.clabel(contour, inline=True, fontsize=12, fmt='%1.1f')
         plt.plot(self.speed300, self.trq_max_serial, 'r-', linewidth=1.5)
-        plt.title('电机效率')
+        plt.title('电机效率\n 效率大于80占比：%.2f%s  效率大于85占比：%.2f%s 效率大于90占比：%.2f%s'%(self.eff80_TM,'%',self.eff85_TM,'%',self.eff85_TM,'%'))
 
         # figure4
         fig4 = plt.figure()
@@ -256,13 +277,47 @@ class oringin:
         contour = plt.contour(self.X, self.Y, self.zz3, self.T1)
         plt.clabel(contour, inline=True, fontsize=12, fmt='%1.1f')
         plt.plot(self.speed300, self.trq_max_serial, 'r-', linewidth=1.5)
-        plt.title('系统效率')
+        plt.title('系统效率\n 效率大于80占比：%.2f%s  效率大于85占比：%.2f%s 效率大于90占比：%.2f%s'%(self.eff80,'%',self.eff85,'%',self.eff90,'%'))
+
         plt.show()
 
-    def OptmizeMapData(self):
-        efficient_sys=self.efficient_sys
-        efficient_tm=self.efficient_tm
-        efficient_tmi=self.efficient_tmi
+    def OptmizeMapData(self,T):
+
+        T0=[]
+
+        #T1=re.split("\[",T)[0]
+        #T1=re.split("\]",T1)[0]
+        T1=re.split(",",T)
+        for i in T1:
+            if i=="":
+                pass
+            if ":"in i:
+                T2=re.split(':',i)
+                #for j in T2:
+                #a=np.linspace(float(T2[0]),float(T2[2]),float(T2[1]))
+                j=float(T2[0])
+                while j<=float(T2[2]):
+                    T0.append(j)
+                    j=j+float(T2[1])
+                
+
+
+                '''for k in a:
+                    T0.append(k)'''
+            else:
+                T0.append(float(i))
+
+        self.T0=T0
+
+
+
+
+
+        efficient_sys=[]
+
+        efficient_tm=[]
+        efficient_tmi=[]
+
         for ii in range(0,len(self.speed_matrix)):
             if ii==0:
                 length=0
@@ -270,10 +325,11 @@ class oringin:
                 maxtm = self.efficient_tm[ii]
                 maxtmi = self.efficient_tmi[ii]
             else:
-                length=ii*len(self.speed_matrix[ii])-1
-                maxsys = self.efficient_sys[ii*len(self.speed_matrix[ii])-1]
-                maxtm = self.efficient_tm[ii*len(self.speed_matrix[ii])-1]
-                maxtmi = self.efficient_tmi[ii*len(self.speed_matrix[ii])-1]
+                length=length+len(self.speed_matrix[ii-1])
+                maxsys = self.efficient_sys[length]
+
+                maxtm = self.efficient_tm[length]
+                maxtmi = self.efficient_tmi[length]
 
             for j in range(1,len(self.speed_matrix[ii])):
 
@@ -283,41 +339,75 @@ class oringin:
                         maxsys = self.efficient_sys[length+j]
                         maxsysN = j
                     if self.efficient_tm[length+j] > maxtm:
-                        maxtm = efficient_tm[length+j]
+                        maxtm = self.efficient_tm[length+j]
                         maxtmN = j
-                    if efficient_tmi[length+j] > maxtmi:
-                        maxtmi = efficient_tmi[length+j]
+                    if self.efficient_tmi[length+j] > maxtmi:
+                        maxtmi = self.efficient_tmi[length+j]
                         maxtmiN = j
-            sysNow = self.efficient_sys[length]
-            tmNow = self.efficient_tm[length]
-            tmiNow = self.efficient_tmi[length]
-            for i in range(1, len(self.speed_matrix[ii])):
-                    if i < maxsysN:
-                        if efficient_sys[length+i] < efficient_sys[i +length- 1]:
-                            efficient_sys[length+i] = efficient_sys[length+i - 1] + (maxsys - efficient_sys[length+i - 1]) / (
-                            maxsysN - i)
-                    elif i > maxsysN:
-                        if efficient_sys[length+i] > efficient_sys[length+i - 1]:
-                            efficient_sys[length+i] = efficient_sys[length+i - 1] - (maxsys - efficient_sys[length+i - 1]) / (
-                            i - maxsysN)
-                    if i<maxtmN:
-                        if efficient_tm[length+i] < efficient_tm[length+i - 1]:
-                            efficient_tm[length+i] = efficient_tm[length+i - 1] + (maxtm - efficient_tm[length+i - 1]) / (
-                                maxtmN - i)
-                    elif i > maxtmN:
-                        if efficient_tm[length+i] > efficient_tm[length+i - 1]:
-                            efficient_tm[length+i] = efficient_tm[length+i - 1] - (maxtm - efficient_tm[length+i - 1]) / (
-                                i - maxtmN)
-                    if i<maxtmiN:
-                        if efficient_tmi[length+i] < efficient_tmi[length+i - 1]:
-                            efficient_tmi[length+i] = efficient_tmi[length+i - 1] + (maxtmi - efficient_tmi[length+i - 1]) / (
-                                maxtmiN - i)
-                    elif i>maxtmiN:
-                        if efficient_tmi[length+i] > efficient_tmi[length+i - 1]:
-                            efficient_tmi[length+i] = efficient_tmi[length+i - 1] - (maxtmi - efficient_tmi[length+i - 1]) / (
-                                i - maxtmiN)
+            #sysNow = self.efficient_sys[length]
+            #tmNow = self.efficient_tm[length]
+            #tmiNow = self.efficient_tmi[length]
+            efficient_sys.append(self.efficient_sys[length])
+            efficient_tm.append(self.efficient_tm[length])
+            efficient_tmi.append(self.efficient_tmi[length])
 
-        print(efficient_sys)
+
+            for i in range(1, len(self.speed_matrix[ii])):
+
+                    if i < maxsysN:
+                        if self.efficient_sys[length+i] < efficient_sys[i +length- 1]:
+                            efficient_sys.append( self.efficient_sys[length+i - 1] + (maxsys - efficient_sys[length+i - 1]) / (
+                            maxsysN - i))
+                        else:
+                            efficient_sys.append(self.efficient_sys[length + i])
+                    elif i > maxsysN:
+                        if self.efficient_sys[length+i] > efficient_sys[length+i - 1]:
+                            efficient_sys.append(efficient_sys[length+i - 1] - (maxsys - efficient_sys[length+i - 1]) / (
+                            i - maxsysN))
+                        else:
+                            efficient_sys.append(self.efficient_sys[length + i])
+                    else:
+                        efficient_sys.append(self.efficient_sys[length+i])
+                    if i<maxtmN:
+                        if self.efficient_tm[length+i] < self.efficient_tm[length+i - 1]:
+                            efficient_tm.append(self.efficient_tm[length+i - 1] + (maxtm - self.efficient_tm[length+i - 1]) / (
+                                maxtmN - i))
+                        else:
+                            efficient_tm.append(self.efficient_tm[length + i])
+                    elif i > maxtmN:
+                        if self.efficient_tm[length+i] > self.efficient_tm[length+i - 1]:
+                            efficient_tm.append( self.efficient_tm[length+i - 1] - (maxtm - self.efficient_tm[length+i - 1]) / (
+                                i - maxtmN))
+                        else:
+                            efficient_tm.append(self.efficient_tm[length + i])
+                    else:
+                        efficient_tm.append(self.efficient_tm[length+i])
+                    if i<maxtmiN:
+                        if self.efficient_tmi[length+i] < self.efficient_tmi[length+i - 1]:
+                            efficient_tmi.append( self.efficient_tmi[length+i - 1] + (maxtmi - self.efficient_tmi[length+i - 1]) / (
+                                maxtmiN - i))
+                        else:
+                            efficient_tmi.append(self.efficient_tmi[length + i])
+                    elif i>maxtmiN:
+                        if self.efficient_tmi[length+i] > self.efficient_tmi[length+i - 1]:
+                            efficient_tmi.append( self.efficient_tmi[length+i - 1] - (maxtmi - self.efficient_tmi[length+i - 1]) / (
+                                i - maxtmiN))
+                        else:
+                            efficient_tmi.append(self.efficient_tmi[length + i])
+                    else:
+                        efficient_tmi.append(self.efficient_tmi[length + i])
+
+        #print(self.efficient_sys)
+
+        #print(len(efficient_sys),len(self.efficient_sys))
+        #print(efficient_sys)
+        for i in range(0,len(efficient_sys)):
+                a=1
+                #if efficient_sys[i]!=self.efficient_sys[i]:
+                #print(efficient_sys[i],self.efficient_sys[i])
+                #print(efficient_sys[i],self.efficient_sys[i])
+
+
         self.InterData(efficient_tmi,efficient_tm,efficient_sys,maxsys,maxtm,maxtmi)
         self.PaintMAP1()
 
@@ -361,12 +451,7 @@ class oringin:
 
         #print(len(xx[1]), len(trq_max_coord))
 
-        '''zz33=zz3(:)
-        zz33(isnan(zz33))=[]
-        zz22=zz2(:)
-        zz22(isnan(zz22))=[]
-        zz11=zz1(:)
-        zz11(isnan(zz11))=[]'''
+
         zz11 = []
         zz22 = []
         zz33 = []
@@ -393,12 +478,6 @@ class oringin:
                 else:
                     zz33.append(zz3[i][j])
 
-        # zz33(isnan(zz33)) = []
-
-        # zz22(isnan(zz22)) = []
-
-        # zz11(isnan(zz11)) = []
-
 
         max_sys = int(maxsys * 10) / 10
         max_tm = int(maxtm * 10) / 10
@@ -410,6 +489,10 @@ class oringin:
         num_85_TM = 0
         num_80_TMI = 0
         num_85_TMI = 0
+        num_90 = 0
+        num_90_TM = 0
+        num_90_TMI = 0
+
 
         for i in range(0, num_all):
             if zz33[i] > 80:
@@ -418,11 +501,17 @@ class oringin:
             if zz33[i] > 85:
                 num_85 = num_85 + 1
 
+            if zz33[i] > 90:
+                num_90 = num_90 + 1
+
             if zz22[i] > 80:
                 num_80_TM = num_80_TM + 1
 
             if zz22[i] > 85:
                 num_85_TM = num_85_TM + 1
+
+            if zz22[i] > 90:
+                num_90_TM = num_90_TM + 1
 
             if zz11[i] > 80:
                 num_80_TMI = num_80_TMI + 1
@@ -430,28 +519,52 @@ class oringin:
             if zz11[i] > 85:
                 num_85_TMI = num_85_TMI + 1
 
+            if zz11[i] > 90:
+                num_90_TMI = num_90_TMI + 1
+
+
 
         self.zz1 = zz1
         self.zz2 = zz2
         self.zz3 = zz3
 
         # 这里的T待定
-        self.T1 = [72, 74, 76, 78, 80, 81, 82, 83, 84, 85, 85.5, 86, 86.5, 87, 87.5, 88, 88.5, 89, 89.5, 90, 90.5, 91,
-                   91.5, 92, 92.5, 93, 93.5, 94, 94.5, 95, 95.5, 96, 96.5, 97, 97.5, 98, 98.5, 99, 99.5, 100, max_tmi]
-        self.T2 = [10, 25, 40, 55, 60, 65, 70, 72, 74, 76, 78, 80, 81, 82, 83, 84, 85, 85.5, 86, 86.5, 87, 87.5, 88,
-                   88.5, 89, 89.5, 90, 90.5, 91, 91.5, 92, 92.5, 93, 93.5, 94, 94.5, 95, 95.5, 96, 96.5, 97, 97.5, 98,
-                   98.5, 99, 99.5, 100, max_tm]
-        self.T3 = [10, 25, 40, 55, 60, 65, 70, 72, 74, 76, 78, 80, 81, 82, 83, 84, 85, 85.5, 86, 86.5, 87, 87.5, 88,
-                   88.5, 89, 89.5, 90, 90.5, 91, 91.5, 92, 92.5, 93, 93.5, 94, 94.5, 95, 95.5, 96, 96.5, 97, 97.5, 98,
-                   98.5, 99, 99.5, 100, max_sys]
+        T1=[]
+        T2=[]
+        T3=[]
+        for i in self.T0:
+
+            T1.append(i)
+            T2.append(i)
+            T3.append(i)
+
+
+        T1.append(max_tmi)
+        self.T1 = T1
+        self.T2 = T2.append( max_tm)
+        self.T2 = T2
+        self.T3 = T3.append(max_sys)
+        self.T3 = T3
+
         self.T1.sort()
         self.T2.sort()
         self.T3.sort()
+        print(T1)
+        self.eff80=num_80/num_all*100
+        self.eff85=num_85/num_all*100
+        self.eff90=num_90/num_all*100
+        self.eff80_TM=num_80_TM/num_all*100
+        self.eff85_TM=num_85_TM/num_all*100
+        self.eff90_TMI=num_90_TM/num_all*100
+        self.eff80_TMI=num_80_TMI/num_all*100
+        self.eff85_TMI=num_85_TMI/num_all*100
+        self.eff90_TMI=num_90_TMI/num_all*100
 
-
+                
 
 
     def AnalyseData(self):
+        self.a=[0,0,1]
         speed = list(map(abs,self.N_dem_D_col))
         speed_order=list(map(abs,self.N_dem_E_col))
         torque=list(map(abs,self.TORQUE_col))
@@ -460,7 +573,7 @@ class oringin:
         efficient_tm=list(map(abs,self.EFF_MOT_col))
         efficient_tmi=list(map(abs,self.EFF_CON_col))
 
-
+        #print(efficient_sys)
         self.efficient_sys=efficient_sys
         self.efficient_tm=efficient_tm
         self.efficient_tmi=efficient_tmi
@@ -540,7 +653,9 @@ class oringin:
                 torque_matrix[speed_num].append(torque[i])
                 power_matrix[speed_num].append(power[i])
                 speed_matrix[speed_num] .append(speed[i])
-                #print(torque_matrix)
+
+
+
 
 
             if speed_order[i]!=speed_order[i-1]:
@@ -588,7 +703,6 @@ class oringin:
                 power_perfect.append(power_max)
 
 
-
         self.speed_base = speed_base
         self.torque_ec = torque_ec
         self.power_ec = power_ec
@@ -600,9 +714,10 @@ class oringin:
 
 
 
-plt.rcParams['font.sans-serif'] = ['SimHei']
-a=oringin("EI09_B_MAP_350V_DD_20191011_WT.xls")
-a.readExcel()
-a.PaintMAP()
+
+#a=oringin("EI09_B_MAP_350V_DD_20191011_WT.xls")
+#a.readExcel()
+#a.PaintMAP()
+#a.ChooseMAP1()
 #a.OptmizeMapData()
-a.ChooseMAP1()
+#

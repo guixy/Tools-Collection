@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import  *
 import sys
 
 import shutil
-
-import PaintMAPGUI
+from DramMap import *
+from PaintMAPGUI import Ui_MainWindow
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import  os
@@ -11,26 +11,91 @@ import  re
 import subprocess
 import time
 
-
+class EmittingStr(QObject):
+    textWritten = pyqtSignal(str) #定义一个发送str的信号
+    def write(self, text):
+      self.textWritten.emit(str(text))
 
 class basePage(QMainWindow,Ui_MainWindow):
     def __init__(self):
         super(basePage, self).__init__()
         self.setupUi(self)
+        self.ChooseFileFlag = False
+        sys.stdout = EmittingStr(textWritten=self.outputWritten)
+        self.actionOpen_excel.triggered.connect(self.OpenExcel)
+        self.paint1.clicked.connect(self.PaintMap1)
+        self.paint2.clicked.connect(self.PaintMap2)
+        self.paint3.clicked.connect(self.PaintMap3)
+        self.barlabel = QLabel()
+        self.statusbara.addPermanentWidget(self.barlabel)
+        self.barlabel.setText('未选择Excel')
 
+
+    def OpenExcel(self):
+        dir,file = QFileDialog.getOpenFileName()
+        if dir!="":
+            self.ChooseFileFlag=True
+            print("reading excel..... wait seceonds please")
+            self.DrawMap=oringin(dir)
+            self.barlabel.setText('选择的Excel是：' + dir)
+            self.DrawMap.readExcel()
+    def PaintMap1(self):
+        if self.ChooseFileFlag:
+            self.DrawMap.PaintMAP()
+        else:
+            QMessageBox.about(self, "消息", "请先选择Excel文件！")
+            #print('Error：请先选择Excel文件')
+
+
+
+    def PaintMap2(self):
+        if self.ChooseFileFlag:
+
+            if self.lineEdit_2.text()=="":
+                QMessageBox.about(self, "消息", "请先设置上下限以及步长！")
+            else:
+                if '；' in self.lineEdit_2.text() or "：" in self.lineEdit_2.text() or "，"in self.lineEdit_2.text() or ';' in self.lineEdit_2.text():
+                    QMessageBox.about(self, "消息", "输入有非法字符！")
+                else:
+                    try:
+                        self.DrawMap.ChooseMAP1(self.lineEdit_2.text())
+                    except Exception as e:
+                        print(str(e))
+        else:
+            QMessageBox.about(self, "消息", "请先选择Excel文件！")
+
+
+
+
+    def PaintMap3(self):
+        if self.ChooseFileFlag:
+            if self.lineEdit_2.text()=="":
+                QMessageBox.about(self, "消息", "请先设置上下限以及步长！")
+            else:
+                if '；' in self.lineEdit_2.text() or "：" in self.lineEdit_2.text() or "，"in self.lineEdit_2.text() or ';' in self.lineEdit_2.text():
+                    QMessageBox.about(self, "消息", "输入有非法字符！")
+                else:
+                    try:
+                        self.DrawMap.OptmizeMapData(self.lineEdit_2.text())
+                    except Exception as e:
+                        print(str(e))
+        else:
+            QMessageBox.about(self, "消息", "请先选择Excel文件！")
+
+    def outputWritten(self, text):
+        cursor = self.textBrowser.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        cursor.insertText(text)
+        self.textBrowser.setTextCursor(cursor)
+        self.textBrowser.ensureCursorVisible()
 
 
 if __name__ == '__main__':
-    cmd1 = ""
-    NUM=0
-    VAL=0
+
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon('./Compile/mainwindowIcon.png'))
+
 
     a=basePage()
-
-    a.ChooseProDir()
-
 
 
     a.show()
