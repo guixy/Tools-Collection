@@ -32,6 +32,7 @@ class basePage(QMainWindow,Ui_MainWindow):
 
 
     def OpenExcel(self):
+        '''选择Excel文件'''
         dir,file = QFileDialog.getOpenFileName()
         if dir!="":
             self.ChooseFileFlag=True
@@ -39,16 +40,20 @@ class basePage(QMainWindow,Ui_MainWindow):
             self.DrawMap=oringin(dir)
             self.barlabel.setText('选择的Excel是：' + dir)
             self.DrawMap.readExcel()
+
+
+
     def PaintMap1(self):
+        '''画外特性图'''
         if self.ChooseFileFlag:
             self.DrawMap.PaintMAP()
         else:
             QMessageBox.about(self, "消息", "请先选择Excel文件！")
-            #print('Error：请先选择Excel文件')
 
 
 
     def PaintMap2(self):
+        '''画原始MAP图'''
         if self.ChooseFileFlag:
 
             if self.lineEdit_2.text()=="":
@@ -58,7 +63,8 @@ class basePage(QMainWindow,Ui_MainWindow):
                     QMessageBox.about(self, "消息", "输入有非法字符！")
                 else:
                     try:
-                        self.DrawMap.ChooseMAP1(self.lineEdit_2.text())
+
+                        self.DrawMap.ChooseMAP1(self.lineEdit.text(),self.lineEdit_2.text())
                     except Exception as e:
                         print(str(e))
         else:
@@ -68,6 +74,7 @@ class basePage(QMainWindow,Ui_MainWindow):
 
 
     def PaintMap3(self):
+        '''画优化MAP图'''
         if self.ChooseFileFlag:
             if self.lineEdit_2.text()=="":
                 QMessageBox.about(self, "消息", "请先设置上下限以及步长！")
@@ -76,13 +83,16 @@ class basePage(QMainWindow,Ui_MainWindow):
                     QMessageBox.about(self, "消息", "输入有非法字符！")
                 else:
                     try:
-                        self.DrawMap.OptmizeMapData(self.lineEdit_2.text())
+                        self.DrawMap.OptmizeMapData(self.lineEdit.text(),self.lineEdit_2.text())
                     except Exception as e:
                         print(str(e))
         else:
             QMessageBox.about(self, "消息", "请先选择Excel文件！")
 
+
+
     def outputWritten(self, text):
+        '''打印消息到控制台里'''
         cursor = self.textBrowser.textCursor()
         cursor.movePosition(QTextCursor.End)
         cursor.insertText(text)
@@ -93,11 +103,7 @@ class basePage(QMainWindow,Ui_MainWindow):
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
-
-
     a=basePage()
-
-
     a.show()
 
     #进入程序的主循环，并通过exit函数确保主循环安全结束

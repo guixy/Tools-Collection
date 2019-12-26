@@ -135,7 +135,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>50</y>
+       <y>53</y>
        <width>711</width>
        <height>20</height>
       </rect>
@@ -144,7 +144,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>19</x>
        <y>52</y>
        <width>121</width>
        <height>20</height>
@@ -152,6 +152,52 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="text">
       <string>设置上下限以及步长：</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>21</x>
+       <y>90</y>
+       <width>101</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>优化最大效率点：</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>90</y>
+       <width>101</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>优化最小效率点：</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_3">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>89</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_4">
+     <property name="geometry">
+      <rect>
+       <x>382</x>
+       <y>87</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
      </property>
     </widget>
    </widget>

@@ -16,6 +16,7 @@ class oringin:
         self.path=path
         plt.rcParams['font.sans-serif'] = ['SimHei']
     def readExcel(self):
+        '''读Excel，提取需要的各列数据'''
         workbook1 = xlrd.open_workbook(filename=self.path)
         if self.path != "":
             sheet = workbook1.sheet_by_name('DD')
@@ -29,25 +30,23 @@ class oringin:
 
             for i in range(0,len(row)):
 
-                if row[i] == "N_dem_E":#speed
+                if row[i] == "N_dem_E":#speed指令
                     self.N_dem_E_col = sheet.col_values(i)[needkk:]
-                if row[i] == "N_dem_D":
+                if row[i] == "N_dem_D":#实际转速
                     self.N_dem_D_col = sheet.col_values(i)[needkk:]
 
-                if row[i] == "T_dem_E":
+                if row[i] == "T_dem_E":#扭矩指令
                     self.T_dem_E_col = sheet.col_values(i)[needkk:]
-
-
 
                 if row[i] =="DC_ACT_I":
                     self.DC_col1=sheet.col_values(i)[needkk:]
                 if row[i] =="DC_ACT_U":
                     self.DC_col2 = sheet.col_values(i)[needkk:]
-                if row[i] =="EFF_CON":
+                if row[i] =="EFF_CON":#控制器效率
                     self.EFF_CON_col=sheet.col_values(i)[needkk:]
-                if row[i] =="EFF_MOT":
+                if row[i] =="EFF_MOT":#电机效率
                     self.EFF_MOT_col = sheet.col_values(i)[needkk:]
-                if row[i] == "EFF_SYS":
+                if row[i] == "EFF_SYS":#系统效率
                     self.EFF_SYS_col = sheet.col_values(i)[needkk:]
 
                 if row[i] == "IGBT_TEMP_U":
@@ -66,7 +65,7 @@ class oringin:
                 if row[i] == "IrmsA":
                     self.IrmsA_col = sheet.col_values(i)[needkk:]
 
-                if row[i] == "P":
+                if row[i] == "P":#功率
                     self.P_col = sheet.col_values(i)[needkk:]
                 if row[i] == "TM_TEMP":
                     self.TM_TEMP_col = []
@@ -81,14 +80,14 @@ class oringin:
                         else:
                             self.TM_TEMP_col.append(TM_TEMP_col2[j])
 
-                if row[i] == "TORQUE":
+                if row[i] == "TORQUE":#实际扭矩
                     self.TORQUE_col = sheet.col_values(i)[needkk:]
 
                 if row[i] == "UrmsA":
                     self.UrmsA_col = sheet.col_values(i)[needkk:]
             self.Num = 0
-            self.list = locals()
-            self.CreateList()
+
+
             self.AnalyseData()
 
 
@@ -150,25 +149,10 @@ class oringin:
                         '''
 
 
-
-
-
-
-    def CreateList(self):
-        self.list["N_dem_E"+str(self.Num)]=[]
-        self.list["T_dem_E" + str(self.Num)] = []
-        self.list["DC1" + str(self.Num)] = []
-        self.list["DC2" + str(self.Num)] = []
-        self.list["EFF_CON" + str(self.Num)] = []
-        self.list["EFF_MOT" + str(self.Num)] = []
-        self.list["EFF_SYS" + str(self.Num)] = []
-        self.list["IGBT" + str(self.Num)] = []
-        self.list["IrmsA" + str(self.Num)] = []
-        self.list["P"+str(self.Num)]=[]
-        self.list["TM_TEMP" + str(self.Num)] = []
-        self.list["TORQUE" + str(self.Num)] = []
-        self.list["UrmsA" + str(self.Num)] = []
-    def ChooseMAP1(self,T):
+    def ChooseMAP1(self,title,T):
+        self.title = title
+        '''与绘制外特性图的按钮连接'''
+        self.MAPFLAG=0
         T0 = []
 
         # T1=re.split("\[",T)[0]
@@ -205,23 +189,19 @@ class oringin:
         self.PaintMAP1()
 
     def PaintMAP(self):
-
+        '''外特性图绘制'''
         #figure1
         fig, ax = plt.subplots(num=None, figsize=(13, 8), dpi=60, facecolor='w', edgecolor='k')
 
         l1 = ax.plot(self.speed_maxs, self.torque_maxs, 'bs-', label='扭矩')
         plt.xlabel("转速(rpm)")
+
         # 共享x轴，生成次坐标轴
         ax_sub = ax.twinx()
         l2 = ax_sub.plot(self.speed_maxs, self.power_maxs, 'rs-', label='功率')
         fig.legend(loc=1, bbox_to_anchor=(1, 1), bbox_transform=ax.transAxes)
         ax.set_ylabel('扭矩(Nm)')
         ax_sub.set_ylabel('功率(kw)')
-        '''for a, b in zip(self.speed_base, self.torque_ec):
-            ax.text(a-50, b + 0.02*300, '1' % b, ha='center', va='bottom', fontsize=8,fontweight='bold',color='b')
-
-        for a, b in zip(self.speed_base, self.power_ec):
-            ax_sub.text(a+50, b+3, '%s' % b, ha='center', va='bottom', fontsize=8.8,color='r')'''
         torque_y = 280
         torque_step = 20
         power_y = 170
@@ -239,51 +219,54 @@ class oringin:
 
 
     def PaintMAP1(self):
+        '''MAP图绘制'''
+        if self.MAPFLAG==0:
+            strname="原始图"
+        else:
+            strname="优化图"
+        # figure2  控制器效率
 
-        # figure2
         fig2 = plt.figure()
         plt.ylabel('扭矩(Nm)')
         plt.xlabel("转速(rpm)")
 
-        # ax2 = fig2.add_subplot(111, projection='3d')
-        # surf= ax.plot_surface(self.X,self.Y,self.zz1)
+
 
         contour = plt.contour(self.X, self.Y, self.zz1, self.T1)
         plt.clabel(contour, inline=True, fontsize=12, fmt='%1.1f')
         plt.plot(self.speed300, self.trq_max_serial, 'r-', linewidth=1.5)
-        plt.title('控制器效率\n 效率大于80占比：%.2f%s  效率大于85占比：%.2f%s 效率大于90占比：%.2f%s' %(self.eff80_TMI,'%',self.eff85_TMI,'%',self.eff90_TMI,'%'))
+        plt.title('%s控制器效率%s\n 效率大于80占比：%.2f%s  效率大于85占比：%.2f%s 效率大于90占比：%.2f%s' %(self.title,strname,self.eff80_TMI,'%',self.eff85_TMI,'%',self.eff90_TMI,'%'))
 
-        # figure3
+        # figure3 电机效率
         fig3 = plt.figure()
         plt.ylabel('扭矩(Nm)')
         plt.xlabel("转速(rpm)")
 
-        # ax2 = fig2.add_subplot(111, projection='3d')
-        # surf= ax.plot_surface(self.X,self.Y,self.zz1)
+
 
         contour = plt.contour(self.X, self.Y, self.zz2, self.T1)
         plt.clabel(contour, inline=True, fontsize=12, fmt='%1.1f')
         plt.plot(self.speed300, self.trq_max_serial, 'r-', linewidth=1.5)
-        plt.title('电机效率\n 效率大于80占比：%.2f%s  效率大于85占比：%.2f%s 效率大于90占比：%.2f%s'%(self.eff80_TM,'%',self.eff85_TM,'%',self.eff85_TM,'%'))
+        plt.title('%s电机效率%s\n 效率大于80占比：%.2f%s  效率大于85占比：%.2f%s 效率大于90占比：%.2f%s'%(self.title,strname,self.eff80_TM,'%',self.eff85_TM,'%',self.eff85_TM,'%'))
 
-        # figure4
+        # figure4 系统效率
         fig4 = plt.figure()
         plt.ylabel('扭矩(Nm)')
         plt.xlabel("转速(rpm)")
 
-        # ax2 = fig2.add_subplot(111, projection='3d')
-        # surf= ax.plot_surface(self.X,self.Y,self.zz1)
+
 
         contour = plt.contour(self.X, self.Y, self.zz3, self.T1)
         plt.clabel(contour, inline=True, fontsize=12, fmt='%1.1f')
         plt.plot(self.speed300, self.trq_max_serial, 'r-', linewidth=1.5)
-        plt.title('系统效率\n 效率大于80占比：%.2f%s  效率大于85占比：%.2f%s 效率大于90占比：%.2f%s'%(self.eff80,'%',self.eff85,'%',self.eff90,'%'))
+        plt.title('%s系统效率%s\n 效率大于80占比：%.2f%s  效率大于85占比：%.2f%s 效率大于90占比：%.2f%s'%(self.title,strname,self.eff80,'%',self.eff85,'%',self.eff90,'%'))
 
         plt.show()
 
-    def OptmizeMapData(self,T):
-
+    def OptmizeMapData(self,title,T):
+        self.title=title
         T0=[]
+        self.MAPFLAG=1
 
         #T1=re.split("\[",T)[0]
         #T1=re.split("\]",T1)[0]
@@ -447,9 +430,7 @@ class oringin:
                 zz1[j][i] = float('nan')
                 zz2[j][i] = float('nan')
                 zz3[j][i] = float('nan')
-        # print(zz1)
 
-        #print(len(xx[1]), len(trq_max_coord))
 
 
         zz11 = []
@@ -549,7 +530,7 @@ class oringin:
         self.T1.sort()
         self.T2.sort()
         self.T3.sort()
-        print(T1)
+
         self.eff80=num_80/num_all*100
         self.eff85=num_85/num_all*100
         self.eff90=num_90/num_all*100
@@ -564,7 +545,8 @@ class oringin:
 
 
     def AnalyseData(self):
-        self.a=[0,0,1]
+        '''处理数据'''
+
         speed = list(map(abs,self.N_dem_D_col))
         speed_order=list(map(abs,self.N_dem_E_col))
         torque=list(map(abs,self.TORQUE_col))
@@ -573,12 +555,10 @@ class oringin:
         efficient_tm=list(map(abs,self.EFF_MOT_col))
         efficient_tmi=list(map(abs,self.EFF_CON_col))
 
-        #print(efficient_sys)
+
         self.efficient_sys=efficient_sys
         self.efficient_tm=efficient_tm
         self.efficient_tmi=efficient_tmi
-
-        #self.OptmizeMap(efficient_sys,efficient_tm,efficient_tmi)
         self.speed=speed
         self.torque=torque
 
@@ -647,15 +627,10 @@ class oringin:
         j = 0
         for i in range(1,len(speed_order)):
             if speed_order[i]==speed_order[i-1]:
-                #speed_num = speed_num + 1
                 speed_kinds.append(speed_order[i])
-
                 torque_matrix[speed_num].append(torque[i])
                 power_matrix[speed_num].append(power[i])
                 speed_matrix[speed_num] .append(speed[i])
-
-
-
 
 
             if speed_order[i]!=speed_order[i-1]:
@@ -714,10 +689,3 @@ class oringin:
 
 
 
-
-#a=oringin("EI09_B_MAP_350V_DD_20191011_WT.xls")
-#a.readExcel()
-#a.PaintMAP()
-#a.ChooseMAP1()
-#a.OptmizeMapData()
-#

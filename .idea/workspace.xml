@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4f53dd7-bf26-4036-ab1b-25671325acb4" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DramMap.py" afterPath="$PROJECT_DIR$/DramMap.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapPy.py" afterPath="$PROJECT_DIR$/MapPy.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PaintMAPGUI.py" afterPath="$PROJECT_DIR$/PaintMAPGUI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PaintMAPGUI.ui" afterPath="$PROJECT_DIR$/PaintMAPGUI.ui" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,17 +16,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/$MapPy.coverage" NAME="MapPy Coverage Results" MODIFIED="1577273737103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/$MapPy.coverage" NAME="MapPy Coverage Results" MODIFIED="1577339218114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/$DramMap.coverage" NAME="DramMap Coverage Results" MODIFIED="1577257002744" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MapPy.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MapPy.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/MapPy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="62" column="24" lean-forward="false" selection-start-line="62" selection-start-column="24" selection-end-line="62" selection-end-column="24" />
+            <state relative-caret-position="260">
+              <caret line="40" column="53" lean-forward="true" selection-start-line="40" selection-start-column="53" selection-end-line="40" selection-end-column="53" />
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
               </folding>
@@ -31,17 +34,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DramMap.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DramMap.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DramMap.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="301" column="16" lean-forward="false" selection-start-line="301" selection-start-column="16" selection-end-line="301" selection-end-column="16" />
+            <state relative-caret-position="430">
+              <caret line="254" column="29" lean-forward="true" selection-start-line="254" selection-start-column="29" selection-end-line="254" selection-end-column="29" />
               <folding>
                 <element signature="e#22#32#0" expanded="true" />
-                <element signature="e#520#6537#0" expanded="false" />
-                <element signature="e#6578#7189#0" expanded="false" />
-                <element signature="e#8391#9693#0" expanded="false" />
-                <element signature="e#9730#11410#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -80,9 +79,12 @@
       <file leaf-file-name="PaintMAPGUI.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PaintMAPGUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="84" column="28" lean-forward="false" selection-start-line="84" selection-start-column="21" selection-end-line="84" selection-end-column="28" />
-              <folding />
+            <state relative-caret-position="740">
+              <caret line="96" column="28" lean-forward="false" selection-start-line="96" selection-start-column="28" selection-end-line="96" selection-end-column="28" />
+              <folding>
+                <marker date="1577330594899" expanded="true" signature="309:2193" ph="..." />
+                <marker date="1577330594899" expanded="true" signature="5361:5505" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -128,6 +130,7 @@
       <find>print</find>
       <find>EmittingStr</find>
       <find>statusBar</find>
+      <find>self.Num</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -139,8 +142,8 @@
         <option value="$PROJECT_DIR$/PaintMAPGUI.py" />
         <option value="$PROJECT_DIR$/DramMap22.py" />
         <option value="$PROJECT_DIR$/../matlab+python/openmodel.py" />
-        <option value="$PROJECT_DIR$/MapPy.py" />
         <option value="$PROJECT_DIR$/DramMap.py" />
+        <option value="$PROJECT_DIR$/MapPy.py" />
       </list>
     </option>
   </component>
@@ -151,10 +154,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="679" />
+    <option name="y" value="86" />
+    <option name="width" value="1932" />
+    <option name="height" value="1045" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -422,16 +425,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="679" y="86" width="1932" height="1045" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11770833" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11795407" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21375662" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21627408" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -478,22 +481,22 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/DramMap.py</url>
-          <line>43</line>
+          <line>42</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/DramMap.py</url>
-          <line>206</line>
+          <line>190</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/DramMap.py</url>
-          <line>283</line>
+          <line>265</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/DramMap.py</url>
-          <line>240</line>
+          <line>220</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
@@ -560,10 +563,6 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#22#32#0" expanded="true" />
-            <element signature="e#520#6537#0" expanded="false" />
-            <element signature="e#6578#7189#0" expanded="false" />
-            <element signature="e#8391#9693#0" expanded="false" />
-            <element signature="e#9730#11410#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -574,10 +573,6 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#22#32#0" expanded="true" />
-            <element signature="e#520#6537#0" expanded="false" />
-            <element signature="e#6578#7189#0" expanded="false" />
-            <element signature="e#8391#9693#0" expanded="false" />
-            <element signature="e#9730#11410#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -737,9 +732,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PaintMAPGUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="84" column="28" lean-forward="false" selection-start-line="84" selection-start-column="21" selection-end-line="84" selection-end-column="28" />
-          <folding />
+        <state relative-caret-position="740">
+          <caret line="96" column="28" lean-forward="false" selection-start-line="96" selection-start-column="28" selection-end-line="96" selection-end-column="28" />
+          <folding>
+            <marker date="1577330594899" expanded="true" signature="309:2193" ph="..." />
+            <marker date="1577330594899" expanded="true" signature="5361:5505" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -767,26 +765,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MapPy.py">
+    <entry file="file://$PROJECT_DIR$/DramMap.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="62" column="24" lean-forward="false" selection-start-line="62" selection-start-column="24" selection-end-line="62" selection-end-column="24" />
+        <state relative-caret-position="430">
+          <caret line="254" column="29" lean-forward="true" selection-start-line="254" selection-start-column="29" selection-end-line="254" selection-end-column="29" />
           <folding>
-            <element signature="e#0#30#0" expanded="true" />
+            <element signature="e#22#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DramMap.py">
+    <entry file="file://$PROJECT_DIR$/MapPy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="301" column="16" lean-forward="false" selection-start-line="301" selection-start-column="16" selection-end-line="301" selection-end-column="16" />
+        <state relative-caret-position="260">
+          <caret line="40" column="53" lean-forward="true" selection-start-line="40" selection-start-column="53" selection-end-line="40" selection-end-column="53" />
           <folding>
-            <element signature="e#22#32#0" expanded="true" />
-            <element signature="e#520#6537#0" expanded="false" />
-            <element signature="e#6578#7189#0" expanded="false" />
-            <element signature="e#8391#9693#0" expanded="false" />
-            <element signature="e#9730#11410#0" expanded="false" />
+            <element signature="e#0#30#0" expanded="true" />
           </folding>
         </state>
       </provider>
