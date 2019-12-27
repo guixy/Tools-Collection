@@ -25,9 +25,9 @@ class Ui_MainWindow(object):
         self.paint3 = QtWidgets.QPushButton(self.centralwidget)
         self.paint3.setGeometry(QtCore.QRect(10, 110, 121, 23))
         self.paint3.setObjectName("paint3")
-        self.save = QtWidgets.QPushButton(self.centralwidget)
-        self.save.setGeometry(QtCore.QRect(10, 150, 121, 23))
-        self.save.setObjectName("save")
+        self.paint4 = QtWidgets.QPushButton(self.centralwidget)
+        self.paint4.setGeometry(QtCore.QRect(10, 150, 121, 23))
+        self.paint4.setObjectName("paint4")
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setGeometry(QtCore.QRect(140, 160, 881, 161))
         self.groupBox.setObjectName("groupBox")
@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
         self.paint1.setText(_translate("MainWindow", "绘制外特性图"))
         self.paint2.setText(_translate("MainWindow", "绘制原始MAP图"))
         self.paint3.setText(_translate("MainWindow", "优化MAP图"))
-        self.save.setText(_translate("MainWindow", "保存图"))
+        self.paint4.setText(_translate("MainWindow", "温度曲线"))
         self.groupBox.setTitle(_translate("MainWindow", "控制台"))
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"

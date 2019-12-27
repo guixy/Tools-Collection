@@ -19,14 +19,15 @@ class oringin:
         '''读Excel，提取需要的各列数据'''
         workbook1 = xlrd.open_workbook(filename=self.path)
         if self.path != "":
+
             sheet = workbook1.sheet_by_name('DD')
             #sheet = workbook1.sheets()[]
 
             # sheet = workbook1.sheet_by_name(name)
             #TODO这里是1的原因是因为这是修改后的表，实际的表这里应该是0
-            row = sheet.row_values(1)
+            row = sheet.row_values(0)
 
-            needkk=3
+            needkk=2
 
             for i in range(0,len(row)):
 
@@ -50,35 +51,36 @@ class oringin:
                     self.EFF_SYS_col = sheet.col_values(i)[needkk:]
 
                 if row[i] == "IGBT_TEMP_U":
-                    self.IGBT_col=[]
-                    IGBT_col1 = sheet.col_values(i)[needkk:]
+                    #self.IGBT_col=[]
+                    self.IGBT_TEMP_U_col = sheet.col_values(i)[needkk:]
 
-                    IGBT_col2 = sheet.col_values(i+1)[needkk:]
-                    IGBT_col3 = sheet.col_values(i+2)[needkk:]
-                    for j in range(0,len(IGBT_col1)):
+                    self.IGBT_TEMP_V_col = sheet.col_values(i+1)[needkk:]
+                    self.IGBT_TEMP_W_col = sheet.col_values(i+2)[needkk:]
+                    '''for j in range(0,len(IGBT_col1)):
                         if IGBT_col1[j]>=IGBT_col2[j] and IGBT_col1[j]>=IGBT_col3[j]:
                             self.IGBT_col.append(IGBT_col1[j])
                         elif IGBT_col2[j]>=IGBT_col3[j]:
                             self.IGBT_col.append(IGBT_col2[j])
                         else:
-                            self.IGBT_col.append(IGBT_col3[j])
+                            self.IGBT_col.append(IGBT_col3[j])'''
+
                 if row[i] == "IrmsA":
                     self.IrmsA_col = sheet.col_values(i)[needkk:]
 
                 if row[i] == "P":#功率
                     self.P_col = sheet.col_values(i)[needkk:]
                 if row[i] == "TM_TEMP":
-                    self.TM_TEMP_col = []
+                    #self.TM_TEMP_col = []
 
-                    TM_TEMP_col1 = sheet.col_values(i)[needkk:]
+                    self.TM_TEMP = sheet.col_values(i)[needkk:]
 
-                    TM_TEMP_col2 = sheet.col_values(i+1)[needkk:]
-                    for jj in range(0,len(TM_TEMP_col1)):
+                    self.TM_TEMP2 = sheet.col_values(i+1)[needkk:]
+                    '''for jj in range(0,len(TM_TEMP_col1)):
                         if TM_TEMP_col1[j]>=TM_TEMP_col2[j]:
 
                             self.TM_TEMP_col.append(TM_TEMP_col1[j])
                         else:
-                            self.TM_TEMP_col.append(TM_TEMP_col2[j])
+                            self.TM_TEMP_col.append(TM_TEMP_col2[j])'''
 
                 if row[i] == "TORQUE":#实际扭矩
                     self.TORQUE_col = sheet.col_values(i)[needkk:]
@@ -89,64 +91,6 @@ class oringin:
 
 
             self.AnalyseData()
-
-
-
-
-            '''max1 = N_dem_E_col[0]
-            max2 = T_dem_E_col[0]
-            max3 = TORQUE_col[0]
-            self.N_dem_E = []
-            self.N_dem_E.append(N_dem_E_col[0])
-            for ii in range(0,len(N_dem_E_col)):
-
-                #if N_dem_E_col[ii]<N_dem_E_col[ii-1] or T_dem_E_col[ii]<T_dem_E_col[ii-1] or TORQUE_col[ii]<TORQUE_col[ii-1]:
-                if N_dem_E_col[ii]<max1 :
-                    pass
-                else:
-
-                    if max1 == N_dem_E_col[ii]:
-
-                        if T_dem_E_col[ii]<max2 or TORQUE_col[ii]<max3:
-
-                            pass
-                        else:
-
-                            #self.list["N_dem_E" + str(self.Num)].append(N_dem_E_col[ii])
-                            self.list["T_dem_E" + str(self.Num)].append(T_dem_E_col[ii])
-
-                            self.list["DC1" + str(self.Num)].append(DC_col1[ii])
-                            self.list["DC2" + str(self.Num)].append(DC_col2[ii])
-                            self.list["EFF_CON" + str(self.Num)].append(EFF_CON_col[ii])
-                            self.list["EFF_MOT" + str(self.Num)].append(EFF_MOT_col[ii])
-                            self.list["EFF_SYS" + str(self.Num)].append(EFF_SYS_col[ii])
-                            self.list["IGBT" + str(self.Num)].append(IGBT_col[ii])
-                            self.list["IrmsA" + str(self.Num)].append(IrmsA_col[ii])
-                            self.list["P" + str(self.Num)].append(P_col[ii])
-                            self.list["TM_TEMP" + str(self.Num)].append(TM_TEMP_col[ii])
-                            self.list["TORQUE" + str(self.Num)].append(TORQUE_col[ii])
-                            self.list["UrmsA" + str(self.Num)].append(UrmsA_col[ii])
-
-                    else:
-
-                        max1 = N_dem_E_col[ii]
-                        self.Num=self.Num+1
-                        self.N_dem_E.append(N_dem_E_col[ii])
-                        self.CreateList()
-                        #self.list["N_dem_E" + str(self.Num)].append(N_dem_E_col[ii])
-                        self.list["T_dem_E" + str(self.Num)].append(T_dem_E_col[ii])
-                        self.list["DC1" + str(self.Num)].append(DC_col1[ii])
-                        self.list["DC2" + str(self.Num)].append(DC_col2[ii])
-                        self.list["EFF_CON" + str(self.Num)].append(EFF_CON_col[ii])
-                        self.list["EFF_MOT" + str(self.Num)].append(EFF_MOT_col[ii])
-                        self.list["EFF_SYS" + str(self.Num)].append(EFF_SYS_col[ii])
-                        self.list["IGBT" + str(self.Num)].append(IGBT_col[ii])
-                        self.list["IrmsA" + str(self.Num)].append(IrmsA_col[ii])
-                        self.list["P" + str(self.Num)].append(P_col[ii])
-                        self.list["TM_TEMP" + str(self.Num)].append(TM_TEMP_col[ii])
-                        self.list["TORQUE" + str(self.Num)].append(TORQUE_col[ii])
-                        self.list["UrmsA" + str(self.Num)].append(UrmsA_col[ii])
-                        '''
 
 
     def ChooseMAP1(self,title,T):
@@ -164,9 +108,14 @@ class oringin:
             if ":" in i:
                 T2 = re.split(':', i)
                 # for j in T2:
-                a = np.linspace(float(T2[0]), float(T2[2]), float(T2[1]))
-                for k in a:
-                    T0.append(k)
+                # a=np.linspace(float(T2[0]),float(T2[2]),float(T2[1]))
+                j = float(T2[0])
+                while j <= float(T2[2]):
+                    T0.append(j)
+                    j = j + float(T2[1])
+
+                '''for k in a:
+                    T0.append(k)'''
             else:
                 T0.append(float(i))
 
@@ -186,12 +135,13 @@ class oringin:
                 maxtmiN = i
 
         self.InterData(self.efficient_tmi,self.efficient_tm,self.efficient_sys,maxsys,maxtm,maxtmi)
+
         self.PaintMAP1()
 
     def PaintMAP(self):
         '''外特性图绘制'''
         #figure1
-        fig, ax = plt.subplots(num=None, figsize=(13, 8), dpi=60, facecolor='w', edgecolor='k')
+        fig, ax = plt.subplots(num=None,  facecolor='w', edgecolor='k')
 
         l1 = ax.plot(self.speed_maxs, self.torque_maxs, 'bs-', label='扭矩')
         plt.xlabel("转速(rpm)")
@@ -541,7 +491,21 @@ class oringin:
         self.eff85_TMI=num_85_TMI/num_all*100
         self.eff90_TMI=num_90_TMI/num_all*100
 
-                
+    def PaintTempMap(self):
+        #figure
+        plt.figure()
+        plt.plot(self.temp,'b-', label='电机温度1')
+        plt.plot(self.temp2,'r-',label='电机温度2')
+        plt.legend(loc=1, bbox_to_anchor=(1, 1))
+        plt.ylabel('温度（℃）')
+        plt.figure()
+        plt.plot(self.igbtu,'g-',label='IGBT-U向温度')
+        plt.plot(self.igbtv,'c-',label='IGBT-V向温度')
+        plt.plot(self.igbtw,'y-',label='IGBT-W向温度')
+        plt.legend(loc=1, bbox_to_anchor=(1, 1))
+        plt.ylabel('温度（℃）')
+
+        plt.show()
 
 
     def AnalyseData(self):
@@ -554,13 +518,15 @@ class oringin:
         efficient_sys=list(map(abs,self.EFF_SYS_col))
         efficient_tm=list(map(abs,self.EFF_MOT_col))
         efficient_tmi=list(map(abs,self.EFF_CON_col))
+        igbtu = list(map(abs, self.IGBT_TEMP_U_col))
+        igbtv = list(map(abs, self.IGBT_TEMP_V_col))
+        igbtw = list(map(abs, self.IGBT_TEMP_W_col))
+        temp = list(map(abs, self.TM_TEMP))
+        temp2 = list(map(abs, self.TM_TEMP2))
 
 
-        self.efficient_sys=efficient_sys
-        self.efficient_tm=efficient_tm
-        self.efficient_tmi=efficient_tmi
-        self.speed=speed
-        self.torque=torque
+
+
 
 
         sp_step=30
@@ -619,25 +585,67 @@ class oringin:
         torque_matrix.append([torque[0]])
         power_matrix=[]
         power_matrix.append([power[0]])
-
+        torqueFact=[]
+        speedFact=[]
+        efficient_sysFact=[]
+        efficient_tmFact=[]
+        efficient_tmiFact=[]
+        igbtuFact=[]
+        igbtvFact=[]
+        igbtwFact=[]
+        tempFact=[]
+        temp2Fact=[]
 
 
         speed_matrix = []
         speed_matrix.append([speed[0]])
+        efficient_sysFact.append(efficient_sys[0])
+        efficient_tmFact.append(efficient_tm[0])
+        efficient_tmiFact.append(efficient_tmi[0])
+        igbtuFact.append(igbtu[0])
+        igbtvFact.append(igbtv[0])
+        igbtwFact.append(igbtw[0])
+        tempFact.append(temp[0])
+        temp2Fact.append(temp2[0])
+        torqueFact.append(torque[0])
+        speedFact.append(speed[0])
+
         j = 0
         for i in range(1,len(speed_order)):
-            if speed_order[i]==speed_order[i-1]:
+            if speed_order[i]==speed_order[i-1] and torque_matrix[speed_num][len(torque_matrix[speed_num])-1]<=torque[i] and speed_matrix[speed_num][len(speed_matrix[speed_num])-1]<=speed[i]:
                 speed_kinds.append(speed_order[i])
                 torque_matrix[speed_num].append(torque[i])
                 power_matrix[speed_num].append(power[i])
                 speed_matrix[speed_num] .append(speed[i])
+                efficient_sysFact.append(efficient_sys[i])
+                efficient_tmFact.append(efficient_tm[i])
+                efficient_tmiFact.append(efficient_tmi[i])
+                igbtuFact.append(igbtu[i])
+                igbtvFact.append(igbtv[i])
+                igbtwFact.append(igbtw[i])
+                tempFact.append(temp[i])
+                temp2Fact.append(temp2[i])
+                torqueFact.append(torque[i])
+                speedFact.append(speed[i])
 
 
-            if speed_order[i]!=speed_order[i-1]:
+
+
+            if speed_order[i]>speed_order[i-1]:
                 torque_matrix.append([torque[i]])
                 power_matrix.append([power[i]])
                 speed_matrix.append([speed[i]])
                 speed_num = speed_num + 1
+                efficient_sysFact.append(efficient_sys[i])
+                efficient_tmFact.append(efficient_tm[i])
+                efficient_tmiFact.append(efficient_tmi[i])
+                igbtuFact.append(igbtu[i])
+                igbtvFact.append(igbtv[i])
+                igbtwFact.append(igbtw[i])
+                tempFact.append(temp[i])
+                temp2Fact.append(temp2[i])
+                torqueFact.append(torque[i])
+                speedFact.append(speed[i])
 
         self.speed_matrix=speed_matrix
         torque_maxs=[]
@@ -686,6 +694,17 @@ class oringin:
         self.power_maxs = power_maxs
         self.X = xx
         self.Y = yy
+        self.efficient_sys = efficient_sysFact
+        self.efficient_tm = efficient_tmFact
+        self.efficient_tmi = efficient_tmiFact
+        self.speed = speedFact
+        self.torque = torqueFact
+        self.temp=tempFact
+        self.temp2=temp2Fact
+        self.igbtu=igbtuFact
+        self.igbtv=igbtvFact
+        self.igbtw=igbtwFact
+
 
 
 

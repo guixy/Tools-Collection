@@ -53,7 +53,7 @@
      <string>优化MAP图</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="save">
+   <widget class="QPushButton" name="paint4">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -63,7 +63,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>保存图</string>
+     <string>温度曲线</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
