@@ -1,15 +1,11 @@
 from PyQt5.QtWidgets import  *
-import sys
 
-import shutil
 from DramMap import *
 from PaintMAPGUI import Ui_MainWindow
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import  os
-import  re
 
-import time
 import traceback
 from threading import Thread
 
@@ -81,7 +77,7 @@ class basePage(QMainWindow,Ui_MainWindow):
     def PaintMap1(self):
         '''画外特性图'''
         if self.ChooseFileFlag:
-            self.DrawMap.PaintMAP()
+            self.DrawMap.PaintMAP(self.lineEdit.text())
         else:
             QMessageBox.about(self, "消息", "请先选择Excel文件！")
 

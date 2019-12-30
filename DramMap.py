@@ -1,13 +1,8 @@
 #-*- coding:utf-8 -*-
-import sys
-from PyQt5 import QtCore, QtGui, uic
-from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QMessageBox, QVBoxLayout, QSizePolicy, QWidget
 
-from PyQt5.QtGui import QIcon
 import xlrd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.mlab as mlab
 from scipy.interpolate import *
 import  math
 import re
@@ -138,7 +133,7 @@ class oringin:
 
         self.PaintMAP1()
 
-    def PaintMAP(self):
+    def PaintMAP(self,title):
         '''外特性图绘制'''
         #figure1
         fig, ax = plt.subplots(num=None,  facecolor='w', edgecolor='k')
@@ -161,6 +156,8 @@ class oringin:
             ax_sub.text(self.speed_maxs[i] + 50, self.power_maxs[i] + 0.01 * torque_y,
                  str(round(self.power_maxs[i] * 100) / 100), fontsize=12,fontweight='bold', color='r')
 
+
+        plt.title('%s外特性图'%title)
 
 
 
